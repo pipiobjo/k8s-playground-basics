@@ -1,0 +1,23 @@
+= Pods, Deployments, StatefulSets and DaemonSets
+
+== Overview
+
+=== Pods
+A Pod (not container) is the smallest building-block/worker-unit in Kubernetes, it has a specification of one or more containers and exists for the duration of the containers; if all the containers stop or terminate, the Pod is stopped. Check also https://kubernetes.io/docs/concepts/workloads/pods/
+
+=== Deployments
+Usually a pod will be part of a Deployment; a more controlled or robust way of running Pods. A deployment can be configured to automatically delete stopped or exited Pods and start new ones, as well as run a number of identical Pods e.g. to provide high-availability. Check https://kubernetes.io/docs/concepts/workloads/controllers/deployment/
+
+
+=== StatefulSets
+Basically like a deployment but with static identifiers for the pod identity. Usefull for stable network names, using of storage, ordered rollouts / updates. https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/
+
+
+=== DaemonSet
+
+Used to run pods on all or specific k8s nodes with specific features. if k8s nodes are attached or removed they will also added or removed. https://kubernetes.io/docs/concepts/workloads/controllers/daemonset/
+
+
+== Exercise: Run a stateless Application Using a Deployment
+
+Check the documentation here https://kubernetes.io/docs/tasks/run-application/run-stateless-application-deployment/ and provide the deployment in our `training` namespace.

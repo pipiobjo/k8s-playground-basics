@@ -1,0 +1,150 @@
+= Exercise - Full Custom Application Flow
+
+Now its time to show your skills. Therefor an simple greeting application is provided.
+
+== Our greeting application
+
+Test the endpoints without anything than the application do the following:
+
+.Start the application
+[source%nowrap,bash]
+----
+$ cd 03-custom-application/service/greeting
+$ go run cmd/main.go
+{"level":"info","name":"blueprint-greeting","version":"","time":"2022-08-28T17:00:16+02:00","message":"starting service blueprint"}
+{"level":"info","port":8081,"time":"2022-08-28T17:00:16+02:00","message":"starting health probes"}
+{"level":"info","port":8080,"time":"2022-08-28T17:00:16+02:00","message":"starting rest endpoint"}
+----
+
+.Greeting endpoint
+[source%nowrap,bash]
+----
+$ curl -s http://localhost:8080/v1/greeting/k8s-team | jq
+{
+  "id": 3,
+  "name": "k8s-team",
+  "message": "Servus, k8s-team! Well met!"
+}
+----
+
+.Version endpoint
+[source%nowrap,bash]
+----
+
+$ curl -s http://localhost:8080/v1/version | jq
+{
+"version": ""
+}
+----
+
+
+.Startup probe endpoint
+[source%nowrap,bash]
+----
+$ curl -s http://localhost:8081/start | jq
+{
+  "ok": true
+}
+----
+
+
+.Readiness probe endpoint
+[source%nowrap,bash]
+----
+$ curl -s http://localhost:8081/ready | jq
+{
+  "ok": true
+}
+----
+
+
+.Live probe endpoint
+[source%nowrap,bash]
+----
+$ curl -s http://localhost:8081/live | jq
+{
+  "ok": true
+}
+----
+
+== Dockerize the application
+
+
+.Build service base image
+[source%nowrap,bash]
+----
+$ cd 03-custom-application/build-scripts
+$ ./build-push-service-base-image.sh
+ => [internal] load build definition from Dockerfile                                                                                                                                                                            0.1s
+ => => transferring dockerfile: 915B                                                                                                                                                                                            0.0s
+ => [internal] load .dockerignore                                                                                                                                                                                               0.1s
+ => => transferring context: 2B                                                                                                                                                                                                 0.0s
+ => [internal] load metadata for docker.io/library/golang:1.18-alpine                                                                                                                                                           0.0s
+ => ERROR importing cache manifest from localhost:5003/development/service-base-image:latest                                                                                                                                    0.1s
+ => [1/5] FROM docker.io/library/golang:1.18-alpine                                                                                                                                                                             0.0s
+ => CACHED [2/5] RUN apk update && apk add --no-cache git ca-certificates tzdata && update-ca-certificates                                                                                                                      0.0s
+ => CACHED [3/5] RUN mkdir /gocache                                                                                                                                                                                             0.0s
+ => CACHED [4/5] RUN go install github.com/axw/gocov/gocov@v1.1.0      && go install github.com/AlekSi/gocov-xml@v1.0.0     && go install gotest.tools/gotestsum@v1.7.0     && go install github.com/vakenbolt/go-test-report@  0.0s
+ => CACHED [5/5] RUN adduser     --disabled-password     --gecos ""     --home "/nonexistent"     --shell "/sbin/nologin"     --no-create-home     --uid "10001"     "serviceuser"                                              0.0s
+ => exporting to image                                                                                                                                                                                                          0.1s
+ => => exporting layers                                                                                                                                                                                                         0.0s
+ => => writing image sha256:f446c6976bb1f0508b249077e9ccb4a6766cb22576a4940440dd5c7d75fa66db                                                                                                                                    0.0s
+ => => naming to localhost:5003/development/service-base-image:20220828201623                                                                                                                                                   0.0s
+ => => naming to localhost:5003/development/service-base-image:latest                                                                                                                                                           0.0s
+------
+ > importing cache manifest from localhost:5003/development/service-base-image:latest:
+------
+docker build sucessful, start pushing image ...
+localhost:5003/development/service-base-image
+----
+
+
+.Use dive to check the image
+[source%nowrap,bash]
+----
+$ dive localhost:5003/development/service-base-image:latest
+
+Image name: localhost:5003/development/service-base-image:latest
+Total Image size: 537 MB
+----
+
+
+.Build service
+[source%nowrap,bash]
+----
+$ cd 03-custom-application/build-scripts
+$ ./build-push-greeting-image.sh
+----
+
+.Use dive to check the image
+[source%nowrap,bash]
+----
+$ dive localhost:5003/development/service-greeting:latest
+
+Image name: localhost:5003/development/service-greeting:latest
+Total Image size: 6.4 MB
+----
+
+
+
+
+== Exercise
+
+Provide this stateless application in the kubernetes which considers the following points:
+
+* Use the probes rest endpoints
+** Access to the probe endpoints is only possible from within the k8s cluster
+* Provide the application with multiple replicas
+** Let it dynamically scale based on cpu and / or memory consumption
+* Make the greeting endpoints available from outside the cluster via http and https using ingress (nginx ingress is already installed)
+** Target endpoints
+*** localhost:48080/greeting/v1/greeting/
+*** localhost:48443/greeting/v1/greeting/
+* Provide a setup which could handle multiple environments / stages (dev / test / prod).
+** Consider using kustomize or helm
+* Provide the 03-custom-application/service/greeting/config/config.yaml in the pod in /config
+
+
+
+
+

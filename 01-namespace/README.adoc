@@ -1,0 +1,71 @@
+= Namespace
+
+Namespaces are used for encapsulate a group of resources check details.
+https://kubernetes.io/docs/concepts/overview/working-with-objects/namespaces/
+
+
+
+
+== Provide a new namespace "training"
+
+[source,bash]
+----
+
+kubectl create namespace training
+
+----
+
+.check the namespaces
+[source%nowrap,bash]
+----
+kubectl get ns
+NAME                 STATUS   AGE
+default              Active   15h
+demo                 Active   15h
+ingress-nginx        Active   15h
+kube-node-lease      Active   15h
+kube-public          Active   15h
+kube-system          Active   15h
+local-path-storage   Active   15h
+training             Active   5s
+----
+
+
+== Scoping the kubectl command
+
+You want to target your own namespace instead of default one every time you use `kubectl`.
+You can run a command in a specific namespace by using the `-n, --namespace=''`-flag.
+
+The below commands do the same thing, because kubernetes commands will default to the default namespace:
+[source,bash]
+----
+
+kubectl get pods -n default
+kubectl get pods
+----
+
+
+.To execute a kubectl command above all namespaces you can use `-A`
+[source%nowrap,bash]
+----
+
+kubectl get pods -A
+
+NAMESPACE            NAME                                                   READY   STATUS    RESTARTS   AGE
+demo                 helloweb-67dffcd76f-2hkt4                              1/1     Running   0          175m
+ingress-nginx        ingress-nginx-controller-5dff8dcf67-kvx7q              1/1     Running   0          176m
+kube-system          coredns-6d4b75cb6d-fc9ww                               1/1     Running   0          177m
+kube-system          coredns-6d4b75cb6d-nhvlz                               1/1     Running   0          177m
+kube-system          etcd-k8s-playground-control-plane                      1/1     Running   0          177m
+kube-system          kindnet-wxxzr                                          1/1     Running   0          177m
+kube-system          kube-apiserver-k8s-playground-control-plane            1/1     Running   0          177m
+kube-system          kube-controller-manager-k8s-playground-control-plane   1/1     Running   0          177m
+kube-system          kube-proxy-7kk4c                                       1/1     Running   0          177m
+kube-system          kube-scheduler-k8s-playground-control-plane            1/1     Running   0          177m
+kube-system          metrics-server-555c8cbc74-bjr9d                        1/1     Running   0          177m
+local-path-storage   local-path-provisioner-9cd9bd544-7mdhc                 1/1     Running   0          177m
+
+----
+
+
+

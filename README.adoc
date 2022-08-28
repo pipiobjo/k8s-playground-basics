@@ -1,0 +1,33 @@
+= Kubernetes Basics
+:toc:
+:autofit-option:
+:caution-caption: ☠
+:important-caption: ❗
+:note-caption: 🛈
+:tip-caption: 💡
+:warning-caption: ⚠
+:source-highlighter: coderay
+ifdef::env-github[]
+    rendered by GitHub Asciidoctor {asciidoctor-version}.
+endif::[]
+ifndef::env-github[]
+    rendered by Asciidoctor {asciidoctor-version}
+endif::[]
+
+
+== Overview
+This repository will explain the basic usage of kubernetes. For that we use a local Kubernetes cluster in docker (kind),
+which is provided via https://github.com/pipiobjo/k8s-playground/.
+
+To make setup as easy as possible just execute the following script to provide the tools.
+[source,bash]
+----
+
+./initAsdf-vm.sh
+
+----
+
+
+include::01-namespace/README.adoc[leveloffset=1]
+include::02-pod-deployments/README.adoc[leveloffset=1]
+include::03-custom-application/README.adoc[leveloffset=1]

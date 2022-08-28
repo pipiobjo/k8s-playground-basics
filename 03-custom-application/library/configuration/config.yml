@@ -1,0 +1,5 @@
+url: test
+userId: userid
+password: ${ENV:SECRET_PWD}
+nested:
+  pwd: ${env:NESTED_SECRET_PWD}

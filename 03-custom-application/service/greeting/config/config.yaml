@@ -1,0 +1,5 @@
+service:
+  name: blueprint-greeting
+  rest: 8080
+  health: 8081
+  logLevel: debug
