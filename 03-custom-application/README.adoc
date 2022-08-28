@@ -141,17 +141,20 @@ Total Image size: 6.4 MB
 
 Provide this stateless application in the kubernetes which considers the following points:
 
+* Provide the 03-custom-application/service/greeting/config/config.yaml in the pod in /config
+** Take a look at Configmaps https://kubernetes.io/docs/concepts/configuration/configmap/
 * Use the probes rest endpoints
 ** Access to the probe endpoints is only possible from within the k8s cluster
 * Provide the application with multiple replicas
 ** Let it dynamically scale based on cpu and / or memory consumption
 * Make the greeting endpoints available from outside the cluster via http and https using ingress (nginx ingress is already installed)
+** Take a look at https://kubernetes.io/docs/concepts/services-networking/ingress/
 ** Target endpoints
 *** localhost:48080/greeting/v1/greeting/
 *** localhost:48443/greeting/v1/greeting/
 * Provide a setup which could handle multiple environments / stages (dev / test / prod).
 ** Consider using kustomize or helm
-* Provide the 03-custom-application/service/greeting/config/config.yaml in the pod in /config
+
 
 
 
