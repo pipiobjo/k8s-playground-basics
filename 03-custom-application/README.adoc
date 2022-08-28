@@ -1,4 +1,13 @@
 = Exercise - Full Custom Application Flow
+:toc:
+toc::[]
+:autofit-option:
+:caution-caption: ☠
+:important-caption: ❗
+:note-caption: 🛈
+:tip-caption: 💡
+:warning-caption: ⚠
+:source-highlighter: coderay
 
 Now its time to show your skills. Therefor an simple greeting application is provided.
 

@@ -1,5 +1,4 @@
 = Kubernetes Basics
-:toc:
 :autofit-option:
 :caution-caption: ☠
 :important-caption: ❗
@@ -27,7 +26,8 @@ To make setup as easy as possible just execute the following script to provide t
 
 ----
 
+Topics:
 
-include::01-namespace/README.adoc[leveloffset=1]
-include::02-pod-deployments/README.adoc[leveloffset=1]
-include::03-custom-application/README.adoc[leveloffset=1]
+* link:01-namespace/README.adoc[Namespaces]
+* link:02-pod-deployments/README.adoc[Pods And Deployments]
+* link:03-custom-application/README.adoc[Custom Application]
