@@ -31,3 +31,11 @@ Topics:
 * link:01-namespace/README.adoc[Namespaces]
 * link:02-pod-deployments/README.adoc[Pods And Deployments]
 * link:03-custom-application/README.adoc[Custom Application]
+
+
+== Maybe helpful resources
+
+* Kubernetes Documentation, basically everything you need link:https://kubernetes.io/docs/home/[]
+* Highlevel overview link:https://www.youtube.com/watch?v=I-jDWr69MoM[]
+* Kubernetes tutorial for beginners, from zero to hero ;-) link:https://www.youtube.com/watch?v=X48VuDVv0do[]
+* Manual K8s setup of k8s link:https://github.com/kelseyhightower/kubernetes-the-hard-way[]
