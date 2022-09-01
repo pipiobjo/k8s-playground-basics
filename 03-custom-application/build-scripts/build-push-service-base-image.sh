@@ -8,7 +8,7 @@ source "$SCRIPT_DIR/define-colors.sh"
 # CONSTANTS
 ################
 
-K8S_PLAYGROUND_DIR="../../../../k8s-playground"
+K8S_PLAYGROUND_DIR="$SCRIPT_DIR/../../../../k8s-playground"
 SERVICE_NAME="service-base-image"
 DOCKER_FILE="$SCRIPT_DIR/../docker/service-base/Dockerfile"
 DOCKER_ROOT_BUILD_DIR="$SCRIPT_DIR/../docker/service-base"
