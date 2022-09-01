@@ -15,7 +15,7 @@ source "$SCRIPT_DIR/define-colors.sh"
 MODE="dev"
 
 SERVICE_PATH="$SCRIPT_DIR/../service/greeting/"
-K8S_PLAYGROUND_DIR="../../../../k8s-playground"
+K8S_PLAYGROUND_DIR="$SCRIPT_DIR/../../../../k8s-playground"
 SERVICE_NAME="service-greeting"
 # Import k8s env variables
 source "$K8S_PLAYGROUND_DIR/kind/shell-based-setup/k8s/scripts/k8s-env.sh"
