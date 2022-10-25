@@ -9,7 +9,7 @@ For setting up different environments (local, dev, prelive, prod) k8s namespaces
 .Create environments
 [source, bash]
 ----
-$ ./k8s-infrastructure/namespaceBuilder.sh
+$ ./03-custom-application/k8s-infrastructure/namespaceBuilder.sh
 create namespaces
 namespace/local created
 namespace/dev created
@@ -67,7 +67,7 @@ Check "k8s-playground-basics/03-custom-application/development/build-scripts"
 .deploy local
 [source, bash]
 ----
-./build-deploy-greeting-local.sh
+./03-custom-application/development/build-scripts/build-deploy-greeting-local.sh
 ----
 
 .test local deployment via hostname
@@ -97,7 +97,7 @@ curl -k https://localhost:48443/local/greeting/v1/greeting/hello
 .dev deployment
 [source, bash]
 ----
-./build-deploy-greeting-dev.sh
+./03-custom-application/development/build-scripts/build-deploy-greeting-dev.sh
 ----
 
 .test dev deployment via hostname
@@ -111,7 +111,7 @@ curl -k https://dev.internal:48443/greeting/v1/greeting/hello
 
 ----
 
-.test local deployment via path
+.test dev deployment via path
 [source, bash]
 ----
 curl http://localhost:48080/dev/greeting/v1/greeting/hello
@@ -130,7 +130,7 @@ curl -k https://localhost:48443/dev/greeting/v1/greeting/hello
 .prelive deployment
 [source, bash]
 ----
-./build-deploy-greeting-prelive.sh
+./03-custom-application/development/build-scripts/build-deploy-greeting-prelive.sh
 ----
 
 
@@ -164,7 +164,7 @@ curl -k https://localhost:48443/prelive/greeting/v1/greeting/hello
 .prod deployment
 [source, bash]
 ----
-./build-deploy-greeting-prod.sh
+./03-custom-application/development/build-scripts/build-deploy-greeting-prod.sh
 ----
 
 .test prod deployment via hostname

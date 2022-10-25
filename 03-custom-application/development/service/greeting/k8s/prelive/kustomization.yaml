@@ -33,6 +33,6 @@ images:
   newTag: latest
 - name: greeting
   newName: localhost:5003/development/greeting
-  newTag: tilt-build-1666675944
+  newTag: "20221025161059"
 - name: service-greeting
   newTag: "20221003181521"
