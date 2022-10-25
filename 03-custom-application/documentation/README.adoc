@@ -190,4 +190,37 @@ curl -k https://localhost:48443/prod/greeting/v1/greeting/hello
 ----
 
 
+== Local Live / Hot deployment
 
+Check tilt documentation https://docs.tilt.dev/index.html
+Already installed via asdf.
+
+[source, bash]
+----
+cd localDev/tilt
+tilt up
+----
+
+open browser http://localhost:10350/
+
+
+
+== Kubernetes UIs
+
+
+=== K9s
+Already installed via asdf, check documentation https://k9scli.io/
+
+[source, bash]
+----
+k9s
+----
+
+=== Octant
+
+Already installed via asdf, check documentation https://octant.dev/
+
+[source, bash]
+----
+octant
+----
