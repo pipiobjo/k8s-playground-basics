@@ -1,0 +1,64 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: greeting
+  labels:
+    app: greeting
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: greeting
+  template:
+    metadata:
+      labels:
+        app: greeting
+
+    spec:
+      containers:
+        - name: greeting
+          image: greeting
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+            - containerPort: 8081
+          readinessProbe:
+            httpGet:
+              path: /start
+              port: 8081
+            initialDelaySeconds: 2
+            periodSeconds: 15
+          livenessProbe:
+            httpGet:
+              path: /live
+              port: 8081
+            initialDelaySeconds: 2
+            periodSeconds: 15
+          resources:
+            limits:
+              cpu:    "500m"   # maximum amount of cpu in millicpu
+              memory: "200Mi"  # maximum amount of ram for the container
+            requests:
+              cpu:    "20m"   # minimum amount of cpu in millicpu
+              memory: "20Mi"  # minimum amount of ram
+          volumeMounts:
+            - name: config-volume
+              mountPath: /config
+      volumes:
+        - name: config-volume
+          configMap:
+            name: greeting-props
+            items:
+              - key: config.yaml
+                path: config.yaml
+      imagePullSecrets:
+        - name: ofcsecret
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: kubernetes.azure.com/agentpool
+                    operator: NotIn
+                    values:
+                      - system

@@ -1,0 +1,38 @@
+kind: Kustomization
+apiVersion: kustomize.config.k8s.io/v1beta1
+
+namespace: prod
+
+resources:
+- ../base/
+- resources/ingress.yaml
+
+
+patchesStrategicMerge:
+- resources/pdb.yaml
+- resources/autoscaler.yaml
+
+patches:
+- path: resources/ingress-patch.json
+  target:
+    kind: Ingress
+    name: greeting
+
+
+configMapGenerator:
+- files:
+  - config/config.yaml
+  name: greeting-props
+
+
+# will be overriden by pipeline
+images:
+- newName: "true"
+- name: blueprint-greeting
+  newName: localhost:5000/blueprint-greeting
+  newTag: latest
+- name: greeting
+  newName: localhost:5003/development/greeting
+  newTag: tilt-build-1666675944
+- name: service-greeting
+  newTag: "20221003181521"

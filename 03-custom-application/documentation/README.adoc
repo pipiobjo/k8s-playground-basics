@@ -1,0 +1,193 @@
+= Solution Documentation
+
+
+== Environments
+
+For setting up different environments (local, dev, prelive, prod) k8s namespaces are used. This pattern can also be used for a real world sample. But then you have to ensure that these namespaces and their used nodes dont have an effect on each other, like cpu / memory and storage usage.
+
+
+.Create environments
+[source, bash]
+----
+$ ./k8s-infrastructure/namespaceBuilder.sh
+create namespaces
+namespace/local created
+namespace/dev created
+namespace/prelive created
+namespace/prod created
+
+----
+
+
+
+
+== Release Units
+
+Release Units are the technical units which are used to bundle or structure the release flow.
+We will use here the following units:
+
+* ServiceBaseImage
+* GreetingService
+
+
+
+image::realease-flow.dio.png[]
+
+
+== Host Setup
+
+.Allow Host based ingress configurations within the docker container
+[source, bash]
+----
+cat <<"EOF" | docker exec -i k8s-playground-control-plane /bin/bash -
+echo "127.0.0.1    local.internal" >> /etc/hosts
+echo "127.0.0.1    dev.internal" >> /etc/hosts
+echo "127.0.0.1    prelive.internal" >> /etc/hosts
+echo "127.0.0.1    prod.internal" >> /etc/hosts
+EOF
+----
+
+
+.add it also to the host
+[source, bash]
+----
+echo "127.0.0.1    local.internal" >> /etc/hosts
+echo "127.0.0.1    dev.internal" >> /etc/hosts
+echo "127.0.0.1    prelive.internal" >> /etc/hosts
+echo "127.0.0.1    prod.internal" >> /etc/hosts
+----
+
+
+== Deployments and Tests
+
+Check "k8s-playground-basics/03-custom-application/development/build-scripts"
+
+=== Deploy to the local namespace
+
+.deploy local
+[source, bash]
+----
+./build-deploy-greeting-local.sh
+----
+
+.test local deployment via hostname
+[source, bash]
+----
+curl http://local.internal:48080/greeting/v1/greeting/hello
+{"id":1,"name":"hello","message":"Servus, hello! Well met!"}
+
+curl -k https://local.internal:48443/greeting/v1/greeting/hello
+{"id":2,"name":"hello","message":"Servus, hello! Well met!"}
+----
+
+.test local deployment via path
+[source, bash]
+----
+curl http://localhost:48080/local/greeting/v1/greeting/hello
+{"id":3,"name":"hello","message":"Hi, hello. Welcome!"}
+
+curl -k https://localhost:48443/local/greeting/v1/greeting/hello
+{"id":4,"name":"hello","message":"Servus, hello! Well met!"}
+
+----
+
+
+=== Deploy to the dev namespace
+
+.dev deployment
+[source, bash]
+----
+./build-deploy-greeting-dev.sh
+----
+
+.test dev deployment via hostname
+[source, bash]
+----
+curl http://dev.internal:48080/greeting/v1/greeting/hello
+{"id":1,"name":"hello","message":"Servus, hello! Well met!"}
+
+curl -k https://dev.internal:48443/greeting/v1/greeting/hello
+{"id":2,"name":"hello","message":"Servus, hello! Well met!"}
+
+----
+
+.test local deployment via path
+[source, bash]
+----
+curl http://localhost:48080/dev/greeting/v1/greeting/hello
+{"id":3,"name":"hello","message":"Hi, hello. Welcome!"}
+
+curl -k https://localhost:48443/dev/greeting/v1/greeting/hello
+{"id":4,"name":"hello","message":"Servus, hello! Well met!"}
+
+----
+
+48443
+
+
+=== Deploy to the prelive namespace
+
+.prelive deployment
+[source, bash]
+----
+./build-deploy-greeting-prelive.sh
+----
+
+
+.test prelive deployment via hostname
+[source, bash]
+----
+curl http://prelive.internal:48080/greeting/v1/greeting/hello
+{"id":1,"name":"hello","message":"Servus, hello! Well met!"}
+
+curl -k https://prelive.internal:48443/greeting/v1/greeting/hello
+{"id":2,"name":"hello","message":"Servus, hello! Well met!"}
+
+----
+
+.test prelive deployment via path
+[source, bash]
+----
+curl http://localhost:48080/prelive/greeting/v1/greeting/hello
+{"id":3,"name":"hello","message":"Hi, hello. Welcome!"}
+
+curl -k https://localhost:48443/prelive/greeting/v1/greeting/hello
+{"id":4,"name":"hello","message":"Servus, hello! Well met!"}
+
+----
+
+
+
+
+=== Deploy to the prod namespace
+
+.prod deployment
+[source, bash]
+----
+./build-deploy-greeting-prod.sh
+----
+
+.test prod deployment via hostname
+[source, bash]
+----
+curl http://prod.internal:48080/greeting/v1/greeting/hello
+{"id":1,"name":"hello","message":"Servus, hello! Well met!"}
+
+curl -k https://prod.internal:48443/greeting/v1/greeting/hello
+{"id":2,"name":"hello","message":"Servus, hello! Well met!"}
+
+----
+
+.test prod deployment via path
+[source, bash]
+----
+curl http://localhost:48080/prod/greeting/v1/greeting/hello
+{"id":3,"name":"hello","message":"Hi, hello. Welcome!"}
+
+curl -k https://localhost:48443/prod/greeting/v1/greeting/hello
+{"id":4,"name":"hello","message":"Hi, hello. Welcome!"}
+
+----
+
+
+

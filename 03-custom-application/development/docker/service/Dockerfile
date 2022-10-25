@@ -36,9 +36,9 @@ WORKDIR ${APP_PATH}/${COMPONENT_PATH}
 RUN go mod tidy && go mod download && go mod vendor
 
 
-FROM build-common as build-local
+FROM build-common as build-debug
 
-
+ARG SERVICE_VERSION
 
 
 ## Build
@@ -49,33 +49,33 @@ FROM build-common as build-local
 # for all parameters check https://pkg.go.dev/cmd/compile
 # or go tool compile -help
 # CGO_ENABLED=0 go build -gcflags "all=-N -l"
-RUN CGO_ENABLED=0 go build -gcflags="all=-N -l" -ldflags="-X degbank.com/dbc/library/buildinfo.Version=${SERVICE_VERSION}" -mod vendor cmd/main.go && chmod +x ${APP_BUILD_NAME}
+RUN CGO_ENABLED=0 go build -gcflags="all=-N -l" -ldflags="-X pipiobjo.com/library/buildinfo.Version=${SERVICE_VERSION}" -mod vendor cmd/main.go && chmod +x ${APP_BUILD_NAME}
 
 
 
-FROM build-common as build-dev
+FROM build-common as build-runtime
 
-
+ARG SERVICE_VERSION
 ## Build
 
 #RUN (([ ! -d "${APP_PATH}/vendor" ] && go mod tidy && go mod download && go mod vendor) || true)
 #RUN  go mod tidy && go mod download && go mod vendor
 # Here `-N` will disable optimization and `-l` disable inlining
-RUN go build -ldflags=" -s -w -X degbank.com/dbc/library/buildinfo.Version=${SERVICE_VERSION}" -mod vendor cmd/main.go \
+RUN go build -ldflags=" -s -w -X pipiobjo.com/library/buildinfo.Version=${SERVICE_VERSION}" -mod vendor cmd/main.go \
     && chmod +x ${APP_BUILD_NAME}
 
 
 
 
 FROM build-common as build-release
-
+ARG SERVICE_VERSION
 
 ## Build
 
 #RUN (([ ! -d "${APP_PATH}/vendor" ] && go mod tidy && go mod download && go mod vendor) || true)
 #RUN  go mod tidy && go mod download && go mod vendor
 # Here `-N` will disable optimization and `-l` disable inlining
-RUN go build -ldflags=" -s -w -X degbank.com/dbc/library/buildinfo.Version=${SERVICE_VERSION}" -mod vendor cmd/main.go \
+RUN go build -ldflags=" -s -w -X pipiobjo.com/library/buildinfo.Version=${SERVICE_VERSION}" -mod vendor cmd/main.go \
     && chmod +x ${APP_BUILD_NAME}
 
 
@@ -120,7 +120,7 @@ COPY --from=base /etc/group /etc/group
 ## Stage 3
 ## Assemble final service container from an empty scratch image
 
-FROM service-common AS service-local
+FROM service-common AS service-debug
 
 ENV APP_BUILD_PATH="/app" \
     APP_BUILD_NAME="main"
@@ -128,7 +128,7 @@ ENV APP_BUILD_PATH="/app" \
 ARG COMPONENT_PATH
 
 COPY --from="base" "/go/bin/dlv" "/app/dlv"
-COPY --chown=${USER}:${USER} --from="build-local" "${APP_BUILD_PATH}/$COMPONENT_PATH/${APP_BUILD_NAME}" "${APP_BUILD_PATH}/"
+COPY --chown=${USER}:${USER} --from="build-debug" "${APP_BUILD_PATH}/$COMPONENT_PATH/${APP_BUILD_NAME}" "${APP_BUILD_PATH}/"
 EXPOSE ${APP_PORT} ${APP_HEALTH_PORT} ${DEBUG_PORT}
 
 USER ${USER}:${USER}
@@ -138,7 +138,7 @@ ENV CGO_ENABLED=0
 WORKDIR ${APP_BUILD_PATH}
 ENTRYPOINT ["/app/dlv", "--continue", "--listen=:5082", "--headless=true", "--api-version=2", "--accept-multiclient", "--check-go-version", "--log", "--allow-non-terminal-interactive", "--log-output=debugger,debuglineerr,gdbwire,lldbout,rpc", "exec", "/app/main"]
 
-FROM service-common AS service-dev
+FROM service-common AS service-runtime
 
 ENV APP_BUILD_PATH="/app" \
     APP_BUILD_NAME="main"
@@ -147,7 +147,7 @@ WORKDIR ${APP_BUILD_PATH}
 
 ARG COMPONENT_PATH
 
-COPY --from="build-dev" "${APP_BUILD_PATH}/$COMPONENT_PATH/${APP_BUILD_NAME}" "${APP_BUILD_PATH}/"
+COPY --from="build-runtime" "${APP_BUILD_PATH}/$COMPONENT_PATH/${APP_BUILD_NAME}" "${APP_BUILD_PATH}/"
 
 
 EXPOSE ${APP_PORT} ${DEBUG_PORT}

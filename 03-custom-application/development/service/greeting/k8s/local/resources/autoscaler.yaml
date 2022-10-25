@@ -1,0 +1,6 @@
+apiVersion: autoscaling/v1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: greeting
+spec:
+  minReplicas: 1

@@ -1,0 +1,37 @@
+# version_settings() enforces a minimum Tilt version
+# https://docs.tilt.dev/api.html#api.version_settings
+version_settings(constraint='>=0.22.2')
+
+##
+## custom buttons - https://docs.tilt.dev/buttons.html
+## included icon set - https://fonts.google.com/icons
+##
+
+load('ext://uibutton', 'cmd_button', 'bool_input', 'location')
+
+cmd_button('reload_k8s_secrets',
+            argv=['sh', '-c', 'echo "reload secret" && .././create-k8s-secret.sh'],
+            location=location.NAV,
+            icon_name='lock_reset',
+            text='Reload Secrets',
+)
+
+
+
+
+cmd_button('sample_cmd',
+            argv=['sh', '-c', 'echo click in navigation with variable value= $DRY_RUN'],
+            location=location.NAV,
+            icon_name='developer_board',
+            text='Sample Command with options',
+            inputs=[
+              bool_input('DRY_RUN', true_string='--dry-run', false_string=''),
+            ],
+)
+
+##
+## services
+## uncomment it if not needed
+##
+
+include('./service-greeting.Tiltfile')

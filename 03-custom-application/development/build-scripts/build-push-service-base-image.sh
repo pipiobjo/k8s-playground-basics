@@ -2,13 +2,12 @@
 #set -x
 set -o errexit # fail on error
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )/"
-source "$SCRIPT_DIR/define-colors.sh"
 
 ################
 # CONSTANTS
 ################
-
-K8S_PLAYGROUND_DIR="../../../../k8s-playground"
+#../../../../../k8s-playground/kind/shell-based-setup/k8s/scripts/k8s-env.sh
+K8S_PLAYGROUND_DIR="$SCRIPT_DIR/../../../../../k8s-playground"
 SERVICE_NAME="service-base-image"
 DOCKER_FILE="$SCRIPT_DIR/../docker/service-base/Dockerfile"
 DOCKER_ROOT_BUILD_DIR="$SCRIPT_DIR/../docker/service-base"

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites>
+	<testsuite tests="0" failures="0" time="0.000000" name="pipiobjo.com/service/greeting/cmd" timestamp="2022-10-25T05:32:30Z">
+		<properties>
+			<property name="go.version" value="go1.18.7 linux/amd64"></property>
+		</properties>
+	</testsuite>
+	<testsuite tests="1" failures="0" time="0.000000" name="pipiobjo.com/service/greeting/internal" timestamp="2022-10-25T05:32:30Z">
+		<properties>
+			<property name="go.version" value="go1.18.7 linux/amd64"></property>
+		</properties>
+		<testcase classname="pipiobjo.com/service/greeting/internal" name="TestHello" time="0.000000"></testcase>
+	</testsuite>
+	<testsuite tests="0" failures="0" time="0.000000" name="pipiobjo.com/service/greeting/internal/config" timestamp="2022-10-25T05:32:30Z">
+		<properties>
+			<property name="go.version" value="go1.18.7 linux/amd64"></property>
+		</properties>
+	</testsuite>
+	<testsuite tests="0" failures="0" time="0.000000" name="pipiobjo.com/service/greeting/port/v1" timestamp="2022-10-25T05:32:30Z">
+		<properties>
+			<property name="go.version" value="go1.18.7 linux/amd64"></property>
+		</properties>
+	</testsuite>
+	<testsuite tests="0" failures="0" time="0.000000" name="pipiobjo.com/service/greeting/port/v1/types" timestamp="2022-10-25T05:32:30Z">
+		<properties>
+			<property name="go.version" value="go1.18.7 linux/amd64"></property>
+		</properties>
+	</testsuite>
+</testsuites>

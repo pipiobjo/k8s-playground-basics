@@ -1,0 +1,33 @@
+kind: Kustomization
+apiVersion: kustomize.config.k8s.io/v1beta1
+
+namespace: local
+
+generatorOptions:
+  disableNameSuffixHash: true
+
+resources:
+- ../base/
+- resources/ingress.yaml
+
+patchesStrategicMerge:
+- resources/pdb.yaml
+- resources/autoscaler.yaml
+
+patches:
+- path: resources/ingress-patch.json
+  target:
+    kind: Ingress
+    name: greeting
+
+
+configMapGenerator:
+- files:
+  - config/config.yaml
+  name: greeting-props
+
+# will be overriden by pipeline
+images:
+- name: greeting
+  newName: service-greeting
+  newTag: latest
